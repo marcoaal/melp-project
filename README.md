@@ -25,3 +25,8 @@ docker-compose up -d web
 ```bash
 docker ps
 ```
+
+Then create the database migrations and populate with the initial data
+```bash
+docker-compose exec django_web python manage.py migrate
+```
