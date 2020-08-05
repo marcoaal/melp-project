@@ -7,7 +7,11 @@ from restaurants_app.serializers import RestaurantsSerializer
 
 
 class RestaurantsView(APIView):
-	def get(self,request):
-		restaurants = Restaurants.objects.all()
-		restaurants_serializer = RestaurantsSerializer(restaurants, many=True)
-		return Response(restaurants_serializer.data,status=status.HTTP_200_OK)
+    def get(self, request, pk, format=None):
+        try:
+            restaurants =  Restaurants.objects.get(pk=pk)
+            restaurants_serializer = RestaurantsSerializer(restaurants)
+            return Response(restaurants_serializer.data,status=status.HTTP_200_OK)
+
+        except Restaurants.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
