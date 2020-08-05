@@ -1,0 +1,298 @@
+{
+	"info": {
+		"_postman_id": "3150bcba-40a6-492c-bdce-582c732beadd",
+		"name": "melp_project_collection",
+		"description": "API REST built in Django and Postgres with PostGis",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "restaurants-view",
+			"item": [
+				{
+					"name": "get_restaurant",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a45c330b-1d5d-4cfd-910a-99bec1c4522c",
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"pm.test(\"Successful GET request\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/restaurants-view/{{restaurant_current_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"restaurants-view",
+								"{{restaurant_current_id}}"
+							]
+						},
+						"description": "# Show Single Restaurant\r\n\r\nShow a single Restaurant if exists.\r\n\r\n**URL** : `/restaurants-view/:pk/`\r\n\r\n**URL Parameters** : `pk=[string]` where `pk` is the ID of the Restaurant.\r\n\r\n**Method** : `GET`\r\n\r\n**Auth required** : NO\r\n\r\n**Permissions required** : NONE\r\n\r\n**Data**: `{}`\r\n\r\n## Success Response\r\n\r\n**Condition** : If Restaurants exists.\r\n\r\n**Code** : `200 OK`\r\n\r\n**Content example**\r\n\r\n```json\r\n{\r\n    \"id\": \"123\",\r\n    \"rating\": 1,\r\n    \"name\": \"Mario Sanchez\",\r\n    \"site\": \"https://federico.com\",\r\n    \"email\": \"Anita_Mata71@hotmail.com\",\r\n    \"phone\": \"534 814 204\",\r\n    \"street\": \"82247 Mariano Entrada\",\r\n    \"city\": \"Mérida Alfredotown\",\r\n    \"state\": \"Durango\",\r\n    \"lat\": 19.4400570537131,\r\n    \"lng\": -99.1270470974249\r\n}\r\n```\r\n\r\n## Error Responses\r\n\r\n**Condition** : If Restaurant does not exist with `id` of provided `pk` parameter.\r\n\r\n**Code** : `404 NOT FOUND`\r\n\r\n**Content** : `{}`\r\n\r\n\r\n"
+					},
+					"response": []
+				},
+				{
+					"name": "post_restaurant",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "67a355f2-f869-4ab6-b12e-cd2de0a0add3",
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"pm.test(\"Successful POST request\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"{{restaurant_current_id}}\",\r\n    \"rating\": 1,\r\n    \"name\": \"Marco Aguilar A3\",\r\n    \"site\": \"https://federico.com\",\r\n    \"email\": \"Anita_Mata71@hotmail.com\",\r\n    \"phone\": \"534 814 204\",\r\n    \"street\": \"82247 Mariano Entrada\",\r\n    \"city\": \"Mérida Alfredotown\",\r\n    \"state\": \"Durango\",\r\n    \"lat\": 19.4400570537131,\r\n    \"lng\": -99.1270470974249\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/restaurants-view",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"restaurants-view"
+							]
+						},
+						"description": "# Create restaurant\r\n\r\nCreate a Restaurant and it's registered in the Melp app.\r\n\r\n**URL** : `/restaurants-view`\r\n\r\n**Method** : `POST`\r\n\r\n**Auth required** : NO\r\n\r\n**Permissions required** : None\r\n\r\n**Data constraints**\r\n\r\nProvide the next parameters of Restaurant to be created.\r\n\r\n```json\r\n{\r\n    \"id\": \"text\",\r\n    \"rating\": int number between 0-4,\r\n    \"name\": \"text\",\r\n    \"site\": \"text\",\r\n    \"email\": \"text\",\r\n    \"phone\": \"text\",\r\n    \"street\": \"text\",\r\n    \"city\": \"text\",\r\n    \"state\": \"text\",\r\n    \"lat\": float number,\r\n    \"lng\": float number\r\n}\r\n```\r\n\r\n\r\n## Success Response\r\n\r\n**Condition** : If everything is OK and a Restaurant didn't exist.\r\n\r\n**Code** : `201 CREATED`\r\n\r\n**Content example** :\r\n```json\r\n{\r\n    \"id\": \"test-restaurant-id-1-0-0\",\r\n    \"lat\": 19.4400570537131,\r\n    \"lng\": -99.1270470974249,\r\n    \"rating\": 1,\r\n    \"name\": \"Marco Aguilar A3\",\r\n    \"site\": \"https://federico.com\",\r\n    \"email\": \"Anita_Mata71@hotmail.com\",\r\n    \"phone\": \"534 814 204\",\r\n    \"street\": \"82247 Mariano Entrada\",\r\n    \"city\": \"Mérida Alfredotown\",\r\n    \"state\": \"Durango\"\r\n}\r\n```\r\n\r\n## Error Responses\r\n\r\n**Condition** : If Restaurant already exists.\r\n\r\n**Code** : `400 BAD REQUEST`\r\n\r\n**Content example** :\r\n\r\n```json\r\n{\r\n    \"id\": [\r\n        \"restaurants with this id already exists.\"\r\n    ]\r\n}\r\n```\r\n\r\n### Or\r\n\r\n**Condition** : If a field is missed or incorrect.\r\n\r\n**Code** : `400 BAD REQUEST`\r\n\r\n**Content example**\r\n\r\n```json\r\n{\r\n    \"name\": [\r\n        \"This field is required.\"\r\n    ]\r\n}\r\n```"
+					},
+					"response": []
+				},
+				{
+					"name": "put_restaurant",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3aa5cc96-92eb-4d3e-9590-98397bad50fd",
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"pm.test(\"Successful PUT request\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"rating\": 4\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/restaurants-view/{{restaurant_current_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"restaurants-view",
+								"{{restaurant_current_id}}"
+							]
+						},
+						"description": "# Update Restaurant\r\n\r\nUpdate the Restaurant.\r\n\r\n**URL** : `/restaurants-view/:pk`\r\n\r\n**Method** : `PUT`\r\n\r\n**Auth required** : NO\r\n\r\n**Permissions required** : NONE\r\n\r\n**Data constraints**\r\n\r\n```json\r\n{\r\n    \"parameter_name\": \"[right_datatype]\",\r\n}\r\n```\r\n\r\n**Data example** Partial data is allowed.\r\n\r\n```json\r\n{\r\n    \"name\": \"Mario Sanchez\",\r\n}\r\n```\r\n\r\n## Success Responses\r\n\r\n**Condition** : Update can be performed either fully or partially of the Restaurant.\r\n\r\n**Code** : `200 OK`\r\n\r\n**Content example** : For the example above, when the 'name' is updated and posted to `/restaurants-view/123`...\r\n\r\n```json\r\n{\r\n    \"id\": \"123\",\r\n    \"rating\": 1,\r\n    \"name\": \"Mario Sanchez\",\r\n    \"site\": \"https://federico.com\",\r\n    \"email\": \"Anita_Mata71@hotmail.com\",\r\n    \"phone\": \"534 814 204\",\r\n    \"street\": \"82247 Mariano Entrada\",\r\n    \"city\": \"Mérida Alfredotown\",\r\n    \"state\": \"Durango\",\r\n    \"lat\": 19.4400570537131,\r\n    \"lng\": -99.1270470974249\r\n}\r\n```\r\n\r\n## Error Response\r\n\r\n**Condition** : Restaurant does not exist at URL\r\n\r\n**Code** : `404 NOT FOUND`\r\n\r\n**Content** : `{}`\r\n\r\n### Or\r\n\r\n**Condition** : Is format of a field is incorrect.\r\n\r\n**Code** : `400 BAD REQUEST`\r\n\r\n**Content example** : \r\n```json\r\n{\r\n    \"name\": [\r\n        \"Format error message\"\r\n    ]\r\n}\r\n```"
+					},
+					"response": []
+				},
+				{
+					"name": "delete_restaurant",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ff96fab7-052c-4dcc-b932-665f34a7c760",
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"pm.test(\"Successful DELETE request\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/restaurants-view/{{restaurant_current_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"restaurants-view",
+								"{{restaurant_current_id}}"
+							]
+						},
+						"description": "# Delete Restaurant\r\n\r\nDelete the Restaurant of the Melp app.\r\n\r\n**URL** : `/restaurants-view/:pk`\r\n\r\n**URL Parameters** : `pk=[string]` where `pk` is the ID of the Restaurant in the database.\r\n\r\n**Method** : `DELETE`\r\n\r\n**Auth required** : NO\r\n\r\n**Permissions required** : NONE\r\n\r\n**Data** : `{}`\r\n\r\n## Success Response\r\n\r\n**Condition** : If the Restaurant exists.\r\n\r\n**Code** : `204 NO CONTENT`\r\n\r\n**Content** : `{}`\r\n\r\n## Error Responses\r\n\r\n**Condition** : If there was no Restaurant available to delete.\r\n\r\n**Code** : `404 NOT FOUND`\r\n\r\n**Content** : `{}`"
+					},
+					"response": []
+				},
+				{
+					"name": "get_all_restaurants",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5783b23a-1060-47e8-8df2-3d25964a9207",
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"pm.test(\"Successful GET request\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/restaurants-view",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"restaurants-view"
+							]
+						},
+						"description": "# Get all Melp restaurants\r\nGet all restaurants and their whole info registered in Melp app\r\n\r\n**URL** : `/restaurants-view`\r\n\r\n**Method** : `GET`\r\n\r\n**Auth required** : NO\r\n\r\n**Permissions required** : None\r\n\r\n## Success Responses\r\n\r\n**Condition** : There are no restaurants registered in the app.\r\n\r\n**Code** : `200 OK`\r\n\r\n**Content** : `{[]}`\r\n\r\n### OR\r\n\r\n**Condition** : Get one or more restaurants.\r\n\r\n**Code** : `200 OK`\r\n\r\n**Content** : In this example, three restaurants are got:\r\n\r\n```json\r\n[\r\n    {\r\n        \"id\": \"851f799f-0852-439e-b9b2-df92c43e7672\",\r\n        \"lat\": 19.4400570537131,\r\n        \"lng\": -99.1270470974249,\r\n        \"rating\": 1,\r\n        \"name\": \"Barajas, Bahena and Kano\",\r\n        \"site\": \"https://federico.com\",\r\n        \"email\": \"Anita_Mata71@hotmail.com\",\r\n        \"phone\": \"534 814 204\",\r\n        \"street\": \"82247 Mariano Entrada\",\r\n        \"city\": \"Mérida Alfredotown\",\r\n        \"state\": \"Durango\"\r\n    },\r\n    {\r\n        \"id\": \"4e17896d-a26f-44ae-a8a4-5fbd5cde79b0\",\r\n        \"lat\": 19.437904276995,\r\n        \"lng\": -99.1286576775023,\r\n        \"rating\": 0,\r\n        \"name\": \"Hernández - Lira\",\r\n        \"site\": \"http://graciela.com.mx\",\r\n        \"email\": \"Brandon_Vigil@hotmail.com\",\r\n        \"phone\": \"570 746 998\",\r\n        \"street\": \"93725 Erick Arroyo\",\r\n        \"city\": \"Mateofurt\",\r\n        \"state\": \"Hidalgo\"\r\n    },\r\n    {\r\n        \"id\": \"c0ffd058-e773-47f1-974b-42d41cb555bf\",\r\n        \"lat\": 19.4360705910348,\r\n        \"lng\": -99.1297865731994,\r\n        \"rating\": 3,\r\n        \"name\": \"Rendón - Elizondo\",\r\n        \"site\": \"https://cristina.mx\",\r\n        \"email\": \"Hugo.Casanova49@gmail.com\",\r\n        \"phone\": \"5866-337-812\",\r\n        \"street\": \"5518 Monserrat Explanada\",\r\n        \"city\": \"Chignahuapan María\",\r\n        \"state\": \"Sinaloa\"\r\n    }\r\n]\r\n```"
+					},
+					"response": []
+				}
+			],
+			"description": "CRUD for restaurants in Melp",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "restaurants-statistics",
+			"item": [
+				{
+					"name": "get_restaurants_circle",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/restaurants/statistics?latitude=19.4&longitude=-99.1&radius=50000000",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"restaurants",
+								"statistics"
+							],
+							"query": [
+								{
+									"key": "latitude",
+									"value": "19.4"
+								},
+								{
+									"key": "longitude",
+									"value": "-99.1"
+								},
+								{
+									"key": "radius",
+									"value": "50000000"
+								}
+							]
+						},
+						"description": "# Show Statistical data for restaurants\r\n\r\nGet statistical data for Melp restaurants, by data which correspond to the center of a circle, and a third parameter that corresponds to a radius in METERS\r\n\r\n**URL** : `/restaurants/statistics?latitude=x&longitude=y&radius=z`\r\n\r\n**URL Parameters** : `latitude=[float]` `longitude=[float]` `radius=[float]`.\r\n\r\n**Method** : `GET`\r\n\r\n**Auth required** : NO\r\n\r\n**Permissions required** : NONE\r\n\r\n**Data**: `{}`\r\n\r\n## Success Response\r\n\r\n**Condition** : All parameters are given correctly.\r\n\r\n**Code** : `200 OK`\r\n\r\n**Content example**\r\n\r\n```json\r\n{\r\n    \"count\": \"Count of restaurants that fall inside the circle with center [x,y] y radius z\",\r\n    \"avg\": \"Average rating of restaurant inside the circle\",\r\n    \"std\": \"Standard deviation of rating of restaurants inside the circle\"\r\n}\r\n```\r\n\r\n## Error Responses\r\n\r\n**Condition** : If parameters were not given correctly.\r\n\r\n**Code** : `400 BAD REQUEST`\r\n\r\n**Content** : `{}`"
+					},
+					"response": []
+				}
+			],
+			"description": "Requests for getting stastistical data of Melp restaurants",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "675aecbf-4a04-47e4-b52f-1d2de5ed46b3",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "0557ff95-97d0-4fb9-bed0-57a533bf1451",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "0de61ad0-414d-4e8a-ac4c-91c090375bb4",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "7e793735-7757-472d-a148-f8e373a151ba",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

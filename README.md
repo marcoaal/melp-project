@@ -57,3 +57,6 @@ heroku container:release web -a <app_name>
 heroku run python manage.py makemigrations -a <app_name>
 heroku run python manage.py migrate -a <app_name>
 ```
+
+## API Documentantion
+[a link](https://documenter.getpostman.com/view/12280244/T1LFoWF3)
