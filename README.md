@@ -59,4 +59,4 @@ heroku run python manage.py migrate -a <app_name>
 ```
 
 ## API Documentantion
-[a link](https://documenter.getpostman.com/view/12280244/T1LFoWF3)
+[Postman API documentantion](https://documenter.getpostman.com/view/12280244/T1LFoWF3)
