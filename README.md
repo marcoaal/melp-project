@@ -31,13 +31,13 @@ Then create the database migrations and populate with the initial data
 docker-compose exec web python manage.py migrate
 ```
 
-##Heroku Deployment
+## Heroku Deployment
 In the Heroku dashboard create an app and attach it the Heroku Postgres add-on, then by the Heroku CLI run the commands below:
-###CLI Login
+### CLI Login
 ```bash
 heroku login
 ```
-###Postgres configuration
+### Postgres configuration
 ```bash
 heroku pg:psql -a <app_name>
 ```
@@ -46,13 +46,13 @@ heroku pg:psql -a <app_name>
 => SELECT postgis_version();
 => \q
 ```
-###Docker
+### Docker
 ```bash
 heroku container:login
 heroku container:push web -a <app_name>
 heroku container:release web -a <app_name>
 ```
-###Migrate the data to Postgres
+### Migrate the data to Postgres
 ```bash
 heroku run python manage.py makemigrations -a <app_name>
 heroku run python manage.py migrate -a <app_name>
