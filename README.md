@@ -57,6 +57,9 @@ heroku container:release web -a <app_name>
 heroku run python manage.py makemigrations -a <app_name>
 heroku run python manage.py migrate -a <app_name>
 ```
+## Postman Collection
+In the 'postman' folder there are the collection and environment files for make some requests to testing the API REST
+
 
 ## API Documentantion
 [Postman API documentantion](https://documenter.getpostman.com/view/12280244/T1LFoWF3)
