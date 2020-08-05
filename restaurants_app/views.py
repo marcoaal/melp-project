@@ -5,6 +5,9 @@ from rest_framework.response import Response
 from restaurants_app.models import Restaurants
 from restaurants_app.serializers import RestaurantsSerializer
 
+from django.contrib.gis.geos import Point
+from django.contrib.gis.measure import Distance  
+
 
 class RestaurantsViewList(APIView):
     def get(self, request, format=None):
@@ -31,7 +34,7 @@ class RestaurantsViewDetail(APIView):
             restaurants_serializer = RestaurantsSerializer(restaurants)
             return Response(restaurants_serializer.data,status=status.HTTP_200_OK)
 
-        except Restaurants.DoesNotExist:
+        except Restaurants.DoesNotExist:            
             return Response(status=status.HTTP_404_NOT_FOUND)   
 
     def put(self, request, pk, format=None):
@@ -59,3 +62,15 @@ class RestaurantsViewDetail(APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Restaurants.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+class RestaurantsViewCircle(APIView):
+    def get(self, request, format=None):
+        latitude = float(request.GET['latitude'])
+        longitude = float(request.GET['longitude'])
+        radius = float(request.GET['radius'])
+
+        point = Point(longitude, latitude)
+        restaurants = Restaurants.objects.filter(location__distance_lt=(point, Distance(m=radius)))
+        restaurants_serializer = RestaurantsSerializer(restaurants, many=True)
+
+        return Response(restaurants_serializer.data,status=status.HTTP_200_OK)

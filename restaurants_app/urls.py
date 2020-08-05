@@ -1,15 +1,11 @@
 from django.urls import path
+from django.conf.urls import url
 
 from restaurants_app import views
 
-from rest_framework.urlpatterns import format_suffix_patterns
-from rest_framework import routers
 
-urlpatterns = [
-	#path('restaurants', views.RestaurantsView.as_view()),
-	#path('restaurants/<str:pk>', views.RestaurantsView.as_view()),
-	path('restaurants', views.RestaurantsViewList.as_view()),
-	path('restaurants/<str:pk>', views.RestaurantsViewDetail.as_view()),
+urlpatterns = [ 
+    url(r'^restaurants-view$', views.RestaurantsViewList.as_view()),
+    url(r'^restaurants-view/(?P<pk>\S+)', views.RestaurantsViewDetail.as_view()),
+    url(r'^restaurants/statistics/$',views.RestaurantsViewCircle.as_view())
 ]
-
-urlpatterns = format_suffix_patterns(urlpatterns)
