@@ -15,7 +15,9 @@ class RestaurantsSerializer(serializers.ModelSerializer):
         return obj.location.x
 
     def create(self, validated_data):
-        validated_data["location"] = Point(self.context["lng"],self.context["lat"])
+        validated_data["location"] = Point(
+            self.context["lng"],
+            self.context["lat"])
         return Restaurants.objects.create(**validated_data)
 
     def update(self, instance, validated_data):       

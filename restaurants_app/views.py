@@ -5,8 +5,7 @@ from rest_framework.response import Response
 from restaurants_app.models import Restaurants
 from restaurants_app.serializers import RestaurantsSerializer
 
-from django.contrib.gis.geos import Point
-from django.contrib.gis.measure import Distance  
+from restaurants_app.spatial_statistics import SpatialRestaurants
 
 
 class RestaurantsViewList(APIView):
@@ -21,8 +20,10 @@ class RestaurantsViewList(APIView):
                 context={"lat":request.data["lat"],"lng":request.data["lng"]})
             if restaurants_serializer.is_valid():
                 restaurants_serializer.save()
-                return Response(restaurants_serializer.data, status=status.HTTP_201_CREATED)
-            return Response(restaurants_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response(restaurants_serializer.data, 
+                    status=status.HTTP_201_CREATED)
+            return Response(restaurants_serializer.errors, 
+                status=status.HTTP_400_BAD_REQUEST)
         except Exception:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -32,7 +33,8 @@ class RestaurantsViewDetail(APIView):
         try:
             restaurants =  Restaurants.objects.get(pk=pk)
             restaurants_serializer = RestaurantsSerializer(restaurants)
-            return Response(restaurants_serializer.data,status=status.HTTP_200_OK)
+            return Response(restaurants_serializer.data,
+                status=status.HTTP_200_OK)
 
         except Restaurants.DoesNotExist:            
             return Response(status=status.HTTP_404_NOT_FOUND)   
@@ -45,13 +47,16 @@ class RestaurantsViewDetail(APIView):
             lat = request.data.get("lat",restaurants.location.y)
             lng = request.data.get("lng",restaurants.location.x)
 
-            restaurants_serializer = RestaurantsSerializer(restaurants, data=request.data,
+            restaurants_serializer = RestaurantsSerializer(restaurants, 
+                data=request.data,
                 context={"lat":lat,"lng":lng})
 
             if restaurants_serializer.is_valid():
                 restaurants_serializer.save()
-                return Response(restaurants_serializer.data,status=status.HTTP_200_OK)
-            return Response(restaurants_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response(restaurants_serializer.data,
+                    status=status.HTTP_200_OK)
+            return Response(restaurants_serializer.errors, 
+                status=status.HTTP_400_BAD_REQUEST)
         except Restaurants.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -65,12 +70,13 @@ class RestaurantsViewDetail(APIView):
 
 class RestaurantsViewCircle(APIView):
     def get(self, request, format=None):
-        latitude = float(request.GET['latitude'])
-        longitude = float(request.GET['longitude'])
-        radius = float(request.GET['radius'])
-
-        point = Point(longitude, latitude)
-        restaurants = Restaurants.objects.filter(location__distance_lt=(point, Distance(m=radius)))
-        restaurants_serializer = RestaurantsSerializer(restaurants, many=True)
-
-        return Response(restaurants_serializer.data,status=status.HTTP_200_OK)
+        try:
+            latitude = float(request.GET['latitude'])
+            longitude = float(request.GET['longitude'])
+            radius = float(request.GET['radius'])
+            
+            restaurants_stat = SpatialRestaurants.get_restaurants_circle(
+                latitude,longitude,radius)
+            return Response(restaurants_stat,status=status.HTTP_200_OK)
+        except Exception:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
