@@ -1,0 +1,10 @@
+build:
+  docker:
+    web: Dockerfile
+run:
+  web: gunicorn melp_project.wsgi:application --bind 0.0.0.0:$PORT
+release:
+  image: web
+  command:
+    - python manage.py makemigrations -a melp-project
+    - python manage.py migrate -a melp-project
