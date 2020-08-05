@@ -85,8 +85,13 @@ DATABASES = {
         'PORT': 5432,
     }
 }
+#For Heroku Deployment
 DATABASE_URL = os.environ.get('DATABASE_URL')
-db_from_env = dj_database_url.config(default=DATABASE_URL, conn_max_age=500, ssl_require=True)
+db_from_env = dj_database_url.config(
+    default=DATABASE_URL, 
+    conn_max_age=500, 
+    ssl_require=True, 
+    engine='django.contrib.gis.db.backends.postgis')
 DATABASES['default'].update(db_from_env)
 
 # Password validation
