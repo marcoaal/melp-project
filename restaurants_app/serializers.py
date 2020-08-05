@@ -18,6 +18,19 @@ class RestaurantsSerializer(serializers.ModelSerializer):
         validated_data["location"] = Point(self.context["lng"],self.context["lat"])
         return Restaurants.objects.create(**validated_data)
 
+    def update(self, instance, validated_data):       
+        instance.rating = validated_data.get('rating', instance.rating)
+        instance.name = validated_data.get('name', instance.name)
+        instance.site = validated_data.get('site', instance.site)
+        instance.email = validated_data.get('email', instance.email)
+        instance.phone = validated_data.get('phone', instance.phone)
+        instance.street = validated_data.get('street', instance.street)
+        instance.city = validated_data.get('city', instance.city)
+        instance.state = validated_data.get('state', instance.state)
+        instance.location = Point(self.context["lng"],self.context["lat"])
+        instance.save()
+        return instance
+
     class Meta:
         model = Restaurants
         exclude = ('location',)
