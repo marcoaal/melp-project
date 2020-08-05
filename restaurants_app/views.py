@@ -6,15 +6,11 @@ from restaurants_app.models import Restaurants
 from restaurants_app.serializers import RestaurantsSerializer
 
 
-class RestaurantsView(APIView):
-    def get(self, request, pk, format=None):
-        try:
-            restaurants =  Restaurants.objects.get(pk=pk)
-            restaurants_serializer = RestaurantsSerializer(restaurants)
-            return Response(restaurants_serializer.data,status=status.HTTP_200_OK)
-
-        except Restaurants.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+class RestaurantsViewList(APIView):
+    def get(self, request, format=None):
+        restaurants = Restaurants.objects.all()
+        restaurants_serializer = RestaurantsSerializer(restaurants, many=True)
+        return Response(restaurants_serializer.data,status=status.HTTP_200_OK)
 
     def post(self, request, format=None):
         try:
@@ -26,6 +22,17 @@ class RestaurantsView(APIView):
             return Response(restaurants_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class RestaurantsViewDetail(APIView):
+    def get(self, request, pk, format=None):
+        try:
+            restaurants =  Restaurants.objects.get(pk=pk)
+            restaurants_serializer = RestaurantsSerializer(restaurants)
+            return Response(restaurants_serializer.data,status=status.HTTP_200_OK)
+
+        except Restaurants.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)   
 
     def put(self, request, pk, format=None):
         try:
